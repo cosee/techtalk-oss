@@ -78,7 +78,7 @@ von Michael Zinn
 | Wann | Was | Wozu |
 |-----:|------|----------|
 |  2016 | Kotlin | Besseres Java |
-|  2016 | Funktionale Programmierung | Besseres Programmieren |
+|  2016 | Funktionale Programmierung | Besser Programmieren |
 |  2017 | Open Source Libraries | Besseres Code Reuse |
 
 </script></section><section data-markdown><script type="text/template">
@@ -177,28 +177,316 @@ SOFTWARE.
 </script></section><section data-markdown><script type="text/template">
 
 ### Go
+
+</script></section><section data-markdown><script type="text/template">
+
+### Go
 1. Auf github veröffentlichen
 
 </script></section><section data-markdown><script type="text/template">
 
 ### Go
+1.
+```sh
+$ go get github.com/someuser/somelibrary
+```
+
+2.
 ```go
 import "github.com/someuser/somelibrary"
 ```
 
 </script></section><section data-markdown><script type="text/template">
 
+### Javascript
 
 </script></section><section data-markdown><script type="text/template">
 
-</script></section><section data-markdown><script type="text/template">
+### Javascript
+1. npmjs.com Account erstellen
+2. ```sh
+npm publish
+```
 
 </script></section><section data-markdown><script type="text/template">
 
-</script></section><section data-markdown><script type="text/template">
+### Javascript
+```sh
+npm install --save somelibrary
+```
 
 </script></section><section data-markdown><script type="text/template">
 
+### Java
+
+</script></section><section data-markdown><script type="text/template">
+
+### Java
+1. Maven Central Account erstellen
+2. Sonatype Account erstellen
+3. Beide Accounts verknüpfen
+4. Einen PGP-Key erzeugen
+5. Den Key auf einem öffentlichen Server hinterlegen
+6. Javadoc schreiben
+7. Sonatype-Jira Account erstellen
+8. GroupId per Jira-Ticket beantragen
+9. Artefakte signieren
+10. Artefakte bei einem erlaubten Provider hosten
+11. Library einreichen
+12. Ein paar Tage warten
+13. Formfehler beheben
+14. Goto 11
+15. Eine Ziege opfern
+
+</script></section><section>
+
+<img src="java.jpg">
+
+</section><section data-markdown><script type="text/template">
+
+Geht das auch einfacher?
+
+</script></section><section data-markdown><script type="text/template">
+
+## Was ist unser Ziel?
+
+</script></section><section data-markdown><script type="text/template">
+
+## Ziel:
+
+* Man kann die Library einfach einbinden
+* Maven-Support
+* Gradle-Support
+
+</script></section><section data-markdown><script type="text/template">
+
+## Library in Maven Central?
+
+```xml
+TODO dependency here
+```
+
+</script></section><section data-markdown><script type="text/template">
+
+## Library in einem anderen Repo?
+
+```xml
+TODO repo here
+TODO dependency here
+```
+
+</script></section><section data-markdown><script type="text/template">
+
+## JCenter
+
+</script></section><section data-markdown><script type="text/template">
+
+## JCenter
+* Quasi wie Maven Central
+* Kein Sonatype
+* Kein Javadoc
+* Keine Jira-Tickets
+* Grauenhafter Approval-Prozess
+
+</script></section><section data-markdown><script type="text/template">
+
+TODO Mail-Austausch hier
+
+</script></section><section data-markdown><script type="text/template">
+
+TODO JCenter Screenshot?
+
+</script></section><section data-markdown><script type="text/template">
+
+Wo hosten?
+Wie PGP-signieren?
+
+</script></section><section data-markdown><script type="text/template">
+
+## Bintray
+
+</script></section><section data-markdown><script type="text/template">
+
+## Bintray
+- Artefact Hoster (samt Versionierung)
+- Kann PGP-Keys verwalten
+- Für Open-Source-Projekte kostenlos
+- Kann in JCenter publishen
+- Erträgliche Website
+
+</script></section><section data-markdown><script type="text/template">
+
+TODO Bintray zeigen
+
+</script></section><section data-markdown><script type="text/template">
+
+Gradle?
+
+</script></section><section data-markdown><script type="text/template">
+
+## Gradle
+
+- Wie Maven
+- Einfacher
+- Langsamer, mehr Bugs
+
+</script></section><section data-markdown><script type="text/template">
+
+```gradle
+apply plugin: 'maven-publish'
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from components.java
+            pom.withXml {
+                asNode().dependencies.'*'.findAll() {
+                    it.scope.text() == 'runtime' && project.configurations.compile.allDependencies.find { dep ->
+                        dep.name == it.artifactId.text()
+                    }
+                }.each() {
+                    it.scope*.value = 'compile'
+                }
+            }
+        }
+    }
+}
+
+model {
+    tasks.generatePomFileForMavenPublication {
+        destination = file("$buildDir/libs/ravr-0.0.10.pom")
+    }
+}
+```
+
+</script></section><section data-markdown><script type="text/template">
+
+Wie bauen?
+
+</script></section><section data-markdown><script type="text/template">
+
+## Travis C I
+
+</script></section><section data-markdown><script type="text/template">
+
+## Travis C I
+- Baut Artefakte
+- Kann die Artefakte nach Bintray schicken
+- Für Open-Source-Projekte kostenlos
+- Tatsächlich gute Website
+
+</script></section><section data-markdown><script type="text/template">
+
+Wo hosten?
+
+</script></section><section data-markdown><script type="text/template">
+
+## Github
+
+</script></section><section data-markdown><script type="text/template">
+
+## Github
+- TravisCI baut jeden neuen Commit auf dem Master-Branch
+
+</script></section><section data-markdown><script type="text/template">
+
+### Klassisch
+1. Maven Central Account erstellen
+2. Sonatype Account erstellen
+3. Beide Accounts verknüpfen
+4. Einen PGP-Key erzeugen
+5. Den Key auf einem öffentlichen Server hinterlegen
+5. Eine Ziege opfern
+6. Javadoc schreiben
+7. Sonatype-Jira Account erstellen
+8. GroupId per Jira-Ticket beantragen
+9. Artefakte signieren
+10. Artefakte bei einem erlaubten Provider hosten
+11. Library einreichen
+12. Ein paar Tage warten
+13. Formfehler beheben
+14. Goto 11
+15. Eine Ziege opfern
+
+</script></section><section data-markdown><script type="text/template">
+
+### Einfacher
+
+Github Master
+
+↓
+
+TravisCI
+
+↓
+
+Bintray
+
+↓
+
+JCenter
+
++
+
+Jede Menge Boilerplate-Dateien
+
+</script></section><section data-markdown><script type="text/template">
+
+...Boilerplate-Dateien?
+
+</script></section><section data-markdown><script type="text/template">
+
+### Boilerplate-Dateien
+
+- build.gradle
+- .travis.yaml
+- descriptor.json
+
+</script></section><section data-markdown><script type="text/template">
+
+Geht das auch einfacher?
+
+</script></section><section data-markdown><script type="text/template">
+
+...vielleicht?
+
+</script></section><section data-markdown><script type="text/template">
+
+### Boilerplate per Script generieren?
+
+```sh
+$ cd mylibrary
+$ sacrifice_goat.sh
+Generating descriptor.json...
+Generating .travis.yaml...
+Augmenting build.gradle...
+Done!
+$ 
+```
+
+</script></section><section data-markdown><script type="text/template">
+
+# Was?
+
+</script></section><section data-markdown><script type="text/template">
+
+## Beispiele
+- Ravr
+- null4j
+- ExStream
+
+</script></section><section data-markdown><script type="text/template">
+
+## Ravr
+
+</script></section><section data-markdown><script type="text/template">
+</script></section><section data-markdown><script type="text/template">
+</script></section><section data-markdown><script type="text/template">
+</script></section><section data-markdown><script type="text/template">
+</script></section><section data-markdown><script type="text/template">
+</script></section><section data-markdown><script type="text/template">
+</script></section><section data-markdown><script type="text/template">
+</script></section><section data-markdown><script type="text/template">
 
 </script></section>
 
