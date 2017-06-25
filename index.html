@@ -1,0 +1,243 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>reveal.js</title>
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/black.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                   <section data-markdown><script type="text/template">
+
+# Code Reuse durch Libraries 
+### Open Source einfach selbst gemacht
+
+von Michael Zinn
+
+</script></section><section data-markdown><script type="text/template">
+
+## Agenda
+
+1. Wer?
+2. Warum?
+3. Wie?
+4. Was?
+ 
+</script></section><section data-markdown><script type="text/template">
+
+## Wer?
+
+</script></section><section data-markdown><script type="text/template">
+
+## Wer?
+- Michael Zinn
+- Java, Kotlin, JavaScript, TypeScript, CoffeeScript, PureScript, Ruby, Clojure, Haskell
+- Funktionale Programmierung, Automatisierung, Craftmanship
+- Twitter/Github: RedNifre
+
+</script></section><section data-markdown><script type="text/template">
+
+## Tech Talks
+
+| Wann | Was | Wozu |
+|-----:|------|----------|
+|  2016 | Kotlin | Besseres Java |
+|  2016 | Funktionale Programmierung | Besseres Programmieren |
+|  2017 | Open Source Libraries | Besseres Code Reuse |
+
+</script></section><section data-markdown><script type="text/template">
+
+# Warum?
+
+</script></section><section data-markdown><script type="text/template">
+
+Ganzes Projekt kopieren?
+
+</script></section><section data-markdown><script type="text/template">
+
+Code aus anderem Projekt kopieren?
+
+</script></section><section data-markdown><script type="text/template">
+
+- ~~Ganzes Projekt kopieren?~~ → Framework
+- ~~Code aus anderem Projekt kopieren?~~ → Library
+
+</script></section><section data-markdown><script type="text/template">
+
+## Aber warum?
+
+</script></section><section data-markdown><script type="text/template">
+
+- DRY: Don't Repeat Yourself
+- Bugs müssen nur an einer Stelle gefixt werden
+- TODO LESEN https://solidsourceit.wordpress.com/2012/08/03/does-source-code-duplication-matter/
+
+</script></section><section data-markdown><script type="text/template">
+
+# Wie?
+
+</script></section><section data-markdown><script type="text/template">
+
+## Wie?
+
+1. Lizenz
+2. Publish
+3. ReadMe
+
+</script></section><section data-markdown><script type="text/template">
+
+## Lizenz
+
+</script></section><section data-markdown><script type="text/template">
+
+### Lizenz
+- MIT
+- Apache v2
+- LGPL
+- GPL
+
+</script></section><section data-markdown><script type="text/template">
+
+### MIT License
+
+Copyright (c) -year- -copyright holders-
+
+Tu was du willst.
+
+Verklag mich nicht:
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+</script></section><section data-markdown><script type="text/template">
+
+### Apache v2
+
+- Meist genutzte Lizenz
+- Firmen haben keine Angst davor
+
+</script></section><section data-markdown><script type="text/template">
+
+### LGPL
+- Du darfst es benutzen ohne dass du deinen eigenen Code opensourcen musst.
+- Du musst vom Code abgeleitete Werke unter der LGPL veröffentlichen.
+- Von in der Library enthaltenen Klassen zu erben oder Interfaces zu implementieren erzeugt KEIN abgeleitetes Werk.
+
+</script></section><section data-markdown><script type="text/template">
+
+### GPL
+- Die Library darf nur in Projekten verwendet werden die ebenfalls unter der GPL stehen (viral)
+- Sinn: Das Open Source Ökosystem stärken
+
+</script></section><section data-markdown><script type="text/template">
+
+## Publish
+
+</script></section><section data-markdown><script type="text/template">
+
+### Go
+1. Auf github veröffentlichen
+
+</script></section><section data-markdown><script type="text/template">
+
+### Go
+```go
+import "github.com/someuser/somelibrary"
+```
+
+</script></section><section data-markdown><script type="text/template">
+
+
+</script></section><section data-markdown><script type="text/template">
+
+</script></section><section data-markdown><script type="text/template">
+
+</script></section><section data-markdown><script type="text/template">
+
+</script></section><section data-markdown><script type="text/template">
+
+</script></section><section data-markdown><script type="text/template">
+
+
+</script></section>
+
+
+
+
+
+
+
+
+
+
+
+
+			</div>
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+			// More info https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				history: true,
+
+				transition: 'none',
+				transitionSpeed: 'fast',
+				backgroundTransition: 'none',
+				controls: false,
+				progress: false,
+
+				// More info https://github.com/hakimel/reveal.js#dependencies
+				dependencies: [
+					{ src: 'plugin/markdown/marked.js' },
+					{ src: 'plugin/markdown/markdown.js' },
+					{ src: 'plugin/notes/notes.js', async: true },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+				]
+			});
+		</script>
+	</body>
+</html>
