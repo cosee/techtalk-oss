@@ -154,7 +154,7 @@ SOFTWARE.
 
 ### Apache v2
 
-- Meist genutzte Lizenz
+- 
 - Firmen haben keine Angst davor
 
 </script></section><section data-markdown><script type="text/template">
@@ -203,16 +203,15 @@ import "github.com/someuser/somelibrary"
 </script></section><section data-markdown><script type="text/template">
 
 ### Javascript
+0. ```$ npm init```
 1. npmjs.com Account erstellen
-2. ```sh
-npm publish
-```
+2. ```$ npm publish```
 
 </script></section><section data-markdown><script type="text/template">
 
 ### Javascript
 ```sh
-npm install --save somelibrary
+$ npm install --save somelibrary
 ```
 
 </script></section><section data-markdown><script type="text/template">
@@ -240,15 +239,34 @@ npm install --save somelibrary
 
 </script></section><section>
 
-<img src="java.jpg">
+<img src="maven.jpg">
 
 </section><section data-markdown><script type="text/template">
 
-Geht das auch einfacher?
+o_O
 
 </script></section><section data-markdown><script type="text/template">
 
-## Was ist unser Ziel?
+### Java
+1. Maven Central Account erstellen
+2. Sonatype Account erstellen
+3. Beide Accounts verknüpfen
+4. Einen PGP-Key erzeugen
+5. Den Key auf einem öffentlichen Server hinterlegen
+6. Javadoc schreiben
+7. Sonatype-Jira Account erstellen
+8. GroupId per Jira-Ticket beantragen
+9. Artefakte signieren
+10. Artefakte bei einem erlaubten Provider hosten
+11. Library einreichen
+12. Ein paar Tage warten
+13. Formfehler beheben
+14. Goto 11
+15. Eine Ziege opfern
+
+</script></section><section data-markdown><script type="text/template">
+
+Was ist unser Ziel?
 
 </script></section><section data-markdown><script type="text/template">
 
@@ -260,10 +278,20 @@ Geht das auch einfacher?
 
 </script></section><section data-markdown><script type="text/template">
 
+## Jar?
+- Okay in Gradle 
+- Fummelig in Maven 
+
+</script></section><section data-markdown><script type="text/template">
+
 ## Library in Maven Central?
 
 ```xml
-TODO dependency here
+<dependency>
+	<groupId>biz.cosee.null4j</groupId>
+	<artifactId>null4j</artifactId>
+	<version>0.9.0</version>
+</dependency>
 ```
 
 </script></section><section data-markdown><script type="text/template">
@@ -271,8 +299,20 @@ TODO dependency here
 ## Library in einem anderen Repo?
 
 ```xml
-TODO repo here
-TODO dependency here
+<dependencies>
+	<dependency>
+		<groupId>biz.cosee.null4j</groupId>
+		<artifactId>null4j</artifactId>
+		<version>0.9.0</version>
+	</dependency>
+</dependencies>
+
+<repositories>
+	<repository>
+		<id>jcenter</id>
+		<url>http://jcenter.bintray.com </url>
+	</repository>
+</repositories>
 ```
 
 </script></section><section data-markdown><script type="text/template">
@@ -286,15 +326,51 @@ TODO dependency here
 * Kein Sonatype
 * Kein Javadoc
 * Keine Jira-Tickets
-* Grauenhafter Approval-Prozess
+* Grauenhafter, aber schaffbarer Approval-Prozess
 
 </script></section><section data-markdown><script type="text/template">
 
-TODO Mail-Austausch hier
+JFrog:
+
+> Hi,
+> 
+> JCenter hosts open source applications using the Maven naming convention which has 3 components. For example, a valid allocated path might be: org/apache/maven
+> 
+> The path of the file you have requested to include is missing one of the components. 
+> 
+> Please update your JCenter inclusion path and we will be glad to approve the request.
+> 
+> With Regards,
+> JFrog Support
 
 </script></section><section data-markdown><script type="text/template">
 
-TODO JCenter Screenshot?
+JFrog:
+
+> Hi,
+> 
+> JCenter hosts java applications that follow maven convention. In addition to the jar and .pom files, your version should also include a sources jar, and optionally a javadoc jar.
+> Your files should be under a maven path layout. (See https://bintray.com/docs...)
+> 
+> Once those files are added, we'll be glad to include your package in JCenter
+> 
+> Regards,
+> JFrog Support
+
+</script></section><section data-markdown><script type="text/template">
+
+JFrog:
+
+> … Maven naming convention which has 3 components…
+> Please update your JCenter inclusion path…
+
+Michael:
+
+> … doesn't "biz.cosee.null4j" and biz/cosee/null4j have three parts already? 
+
+JFrog:
+
+> Your request to include your package… has been approved. 
 
 </script></section><section data-markdown><script type="text/template">
 
@@ -310,13 +386,10 @@ Wie PGP-signieren?
 ## Bintray
 - Artefact Hoster (samt Versionierung)
 - Kann PGP-Keys verwalten
-- Für Open-Source-Projekte kostenlos
 - Kann in JCenter publishen
+- Für Open-Source-Projekte kostenlos
 - Erträgliche Website
 
-</script></section><section data-markdown><script type="text/template">
-
-TODO Bintray zeigen
 
 </script></section><section data-markdown><script type="text/template">
 
@@ -329,35 +402,6 @@ Gradle?
 - Wie Maven
 - Einfacher
 - Langsamer, mehr Bugs
-
-</script></section><section data-markdown><script type="text/template">
-
-```gradle
-apply plugin: 'maven-publish'
-
-publishing {
-    publications {
-        maven(MavenPublication) {
-            from components.java
-            pom.withXml {
-                asNode().dependencies.'*'.findAll() {
-                    it.scope.text() == 'runtime' && project.configurations.compile.allDependencies.find { dep ->
-                        dep.name == it.artifactId.text()
-                    }
-                }.each() {
-                    it.scope*.value = 'compile'
-                }
-            }
-        }
-    }
-}
-
-model {
-    tasks.generatePomFileForMavenPublication {
-        destination = file("$buildDir/libs/ravr-0.0.10.pom")
-    }
-}
-```
 
 </script></section><section data-markdown><script type="text/template">
 
@@ -444,6 +488,93 @@ Jede Menge Boilerplate-Dateien
 
 </script></section><section data-markdown><script type="text/template">
 
+### build.gradle
+
+```gradle
+apply plugin: 'maven-publish'
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            from components.java
+            pom.withXml {
+                asNode().dependencies.'*'.findAll() {
+                    it.scope.text() == 'runtime' && project.configurations.compile.allDependencies.find { dep ->
+                        dep.name == it.artifactId.text()
+                    }
+                }.each() {
+                    it.scope*.value = 'compile'
+                }
+            }
+        }
+    }
+}
+
+model {
+    tasks.generatePomFileForMavenPublication {
+        destination = file("$buildDir/libs/ravr-0.0.10.pom")
+    }
+}
+```
+
+</script></section><section data-markdown><script type="text/template">
+
+### .travis.yaml
+
+```yaml
+language: java
+jdk:
+  - oraclejdk8
+before_install:
+  - chmod +x gradlew
+
+before_deploy:
+  - ./gradlew generatePomFileForMavenPublication
+  - ./gradlew sourcesJar
+
+deploy:
+  provider: bintray
+  file: "descriptor.json"
+  user: $BINTRAY_API_USER
+  key: $BINTRAY_API_KEY
+  dry-run: false
+```
+
+</script></section><section data-markdown><script type="text/template">
+
+### descriptor.json
+
+```json
+{
+	"package": {
+		"name": "null4j",
+			"repo": "null4j",
+			"subject": "cosee",
+			"desc": "Simplified null handling",
+			"website_url": "https://github.com/cosee/null4j",
+			"issue_tracker_url": "https://github.com/cosee/null4j/issues",
+			"vcs_url": "https://github.com/cosee/null4j",
+			"licenses": ["Apache-2.0"],
+			"labels": ["java"],
+			"public_download_numbers": false,
+			"public_stats": false
+	},
+	 
+	"version": {
+	  "name": "0.9.2",
+	  "released": "2017-06-21",
+	  "gpgSign": false
+	},
+	 
+	"files": [
+		{"includePattern": "build/libs/(.*)", "uploadPattern": "biz/cosee/null4j/null4j/0.9.2/$1"}
+	],
+	"publish": true
+}
+```
+
+</script></section><section data-markdown><script type="text/template">
+
 Geht das auch einfacher?
 
 </script></section><section data-markdown><script type="text/template">
@@ -466,7 +597,7 @@ $
 
 </script></section><section data-markdown><script type="text/template">
 
-# Was?
+# Beispiele
 
 </script></section><section data-markdown><script type="text/template">
 
@@ -480,8 +611,451 @@ $
 ## Ravr
 
 </script></section><section data-markdown><script type="text/template">
+
+### FP in Javascript
+- Ramda (Funktionen)
+- Folktale (Daten)
+
 </script></section><section data-markdown><script type="text/template">
+
+### FP in Java
+- vavr (Daten + Objekt-funktionale Methoden)
+
 </script></section><section data-markdown><script type="text/template">
+
+### FP in Java
+- vavr (Daten)
+- Ravr (Funktionen)
+
+</script></section><section data-markdown><script type="text/template">
+
+## Ravr
+- Portierung einer .js Library
+- Ermöglicht gleichen Code im Frontend und Backend
+- Gutes Einstiegsprojekt
+
+</script></section><section data-markdown><script type="text/template">
+
+## null4j
+
+</script></section><section data-markdown><script type="text/template">
+
+### Das Null-Problem
+
+```java
+
+class Example {
+
+	String chop(String string) {
+		return string.substring(0, string.length - 1);
+	}
+
+	void main() {
+		String fail = chop(null);
+	}
+
+}
+```
+
+1. String hat eine substring Methode
+2. null ist ein String (null ist von jedem Typ)
+3. null hat keine substring Methode
+
+</script></section><section data-markdown><script type="text/template">
+
+### Das Null-Problem
+
+```java
+
+class Example {
+
+	String chop(String string) {
+		return string.substring(0, string.length - 1);
+	}
+
+	void main() {
+		String fail = chop(null);
+	}
+
+}
+```
+
+1. ~~String hat eine substring Methode~~
+2. null ist ein String (null ist von jedem Typ)
+3. null hat keine substring Methode
+
+</script></section><section data-markdown><script type="text/template">
+
+### Das Null-Problem
+
+```java
+class Example {
+	String chop(String string) {
+		if(string == null) {
+			return null; // deal with it
+		} else {
+			return string.substring(0, string.length - 1);
+		}
+	}
+	void main() {
+		String fail = chop(null);
+	}
+}
+```
+
+1. ~~String hat eine substring Methode~~
+2. null ist ein String (null ist von jedem Typ)
+3. null hat keine substring Methode
+
+</script></section><section data-markdown><script type="text/template">
+
+### Das Null-Problem
+
+```java
+
+class Example {
+
+	String chop(String string) {
+		return string.substring(0, string.length - 1);
+	}
+
+	void main() {
+		String fail = chop(null);
+	}
+
+}
+```
+
+1. String hat eine substring Methode
+2. null ist ein String (null ist von jedem Typ)
+3. null hat keine substring Methode
+
+</script></section><section data-markdown><script type="text/template">
+
+### Das Null-Problem
+
+```java
+
+class Example {
+
+	String chop(String string) {
+		return string.substring(0, string.length - 1);
+	}
+
+	void main() {
+		String fail = chop(null);
+	}
+
+}
+```
+
+1. String hat eine substring Methode
+2. ~~null ist ein String (null ist von jedem Typ)~~
+3. null hat keine substring Methode
+
+</script></section><section data-markdown><script type="text/template">
+
+### Das Null-Problem
+
+```java
+
+class Example {
+
+	String chop(String string) {
+		return string.substring(0, string.length - 1);
+	}
+
+	void main() {
+		String fail = chop(Optional.empty());❌
+	}
+
+}
+```
+
+1. String hat eine substring Methode
+2. Optional<String> ist KEIN String
+3. Optional<String> hat keine substring Methode
+
+</script></section><section data-markdown><script type="text/template">
+
+### Das Null-Problem
+
+```java
+
+class Example {
+
+	@NotNull String chop(@NotNull String string) {
+		return string.substring(0, string.length - 1);
+	}
+
+	void main() {
+		@NotNull String fail = chop(null);❌
+	}
+
+}
+```
+
+1. @NotNull String hat eine substring Methode
+2. null ist ein @Nullable String, aber KEIN @NotNull String
+3. @Nullable String hat keine substring Methode
+
+</script></section><section data-markdown><script type="text/template">
+
+### Das Null-Problem
+
+```java
+@NotNullByDefault
+class Example {
+
+	String chop(String string) {
+		return string.substring(0, string.length - 1);
+	}
+
+	void main() {
+		String fail = chop(null);❌
+	}
+
+}
+```
+
+1. String hat eine substring Methode
+2. null ist ein @Nullable String, aber KEIN String
+3. @Nullable String hat keine substring Methode
+
+</script></section><section data-markdown><script type="text/template">
+
+### null4j
+
+- Löst das Null-Problem
+- Wenige, einfache, aber mächtige Funktionen (Nur orDefault und let, die aber kombinierbar sind)
+
+```java
+return orDefault(let(person,
+	Person::getAddress,
+	Address::getStreet,
+	Street::getName), "?NO STREET NAME");
+```
+
+</script></section><section data-markdown><script type="text/template">
+
+## ExStream
+
+</script></section><section data-markdown><script type="text/template">
+
+### Java Stream API
+
+```java
+return users.stream()
+	.flatMap(User::getAccount)
+	.sortBy(Account::getId);
+
+```
+
+</script></section><section data-markdown><script type="text/template">
+
+### Java Stream API
+
+```java
+return users.stream()
+	.flatMap(User::getAccounts.stream())
+	.sortBy(Account::getId);
+
+```
+
+</script></section><section data-markdown><script type="text/template">
+
+### Java Stream API
+
+```java
+return users.stream()
+	.flatMap(User::getAccounts.andThen(List::stream))
+	.sortBy(Account::getId);
+
+```
+
+</script></section><section data-markdown><script type="text/template">
+
+### Java Stream API
+
+```java
+return users.stream()
+	.flatMap(user -> user.getAccounts.stream())
+	.sortBy(Account::getId);
+
+```
+
+</script></section><section data-markdown><script type="text/template">
+
+### Java Stream API
+
+```java
+return users.stream()
+	.flatMap(user -> user.getAccounts.stream())
+	.sorted(Comparators.comparing(Account::getId));
+
+```
+
+</script></section><section data-markdown><script type="text/template">
+
+### Java Stream API
+
+```java
+return users.stream()
+	.flatMap(user -> user.getAccounts.stream())
+	.sorted(Comparators.comparing(Account::getId))
+	.toList();
+```
+
+</script></section><section data-markdown><script type="text/template">
+
+### Java Stream API
+
+```java
+return users.stream()
+	.flatMap(user -> user.getAccounts.stream())
+	.sorted(Comparators.comparing(Account::getId))
+	.collect(Collectors.toList());
+```
+
+</script></section><section data-markdown><script type="text/template">
+
+### Java Stream API
+
+```java
+return users.stream()
+	.flatMap(user -> user.getAccounts.stream())
+	.sorted(comparing(Account::getId))
+	.collect(toList());
+```
+
+</script></section><section data-markdown><script type="text/template">
+
+### Java Stream API -> ExStream
+
+```java
+return users.stream()
+	.flatMap(user -> user.getAccounts.stream())
+	.sorted(comparing(Account::getId))
+	.collect(toList());
+```
+
+</script></section><section data-markdown><script type="text/template">
+
+### Java Stream API -> ExStream
+
+```java
+return stream(users,
+	flatMap(user -> user.getAccounts.stream()),
+	sorted(comparing(Account::getId)),
+	collect(toList()));
+```
+
+</script></section><section data-markdown><script type="text/template">
+
+### Java Stream API -> ExStream
+
+```java
+return stream(users,
+	flatMap(User::getAccounts),
+	sorted(comparing(Account::getId)),
+	collect(toList()));
+```
+
+</script></section><section data-markdown><script type="text/template">
+
+### Java Stream API -> ExStream
+
+```java
+return stream(users,
+	flatMap(User::getAccounts),
+	sortBy(Account::getId),
+	collect(toList()));
+```
+
+</script></section><section data-markdown><script type="text/template">
+
+### Java Stream API -> ExStream
+
+```java
+return stream(users,
+	flatMap(User::getAccounts),
+	sortBy(Account::getId),
+	toList());
+```
+
+</script></section><section data-markdown><script type="text/template">
+
+### ExStream
+
+```java
+return stream(users,
+	flatMap(User::getAccounts),
+	sortBy(Account::getId));
+
+```
+
+</script></section><section data-markdown><script type="text/template">
+
+### ExStream
+
+```java
+return optionalUser
+	.flatMap(User::getAccounts);
+
+```
+
+</script></section><section data-markdown><script type="text/template">
+
+### ExStream
+
+```java
+return optionalUser
+	.map(User::getAccounts)
+	.orElse(Collections.emptyList());
+
+```
+
+</script></section><section data-markdown><script type="text/template">
+
+### ExStream
+
+```java
+return stream(optionalUser,
+	flatMap(User::getAccounts));
+
+```
+
+</script></section><section data-markdown><script type="text/template">
+
+### ExStream
+
+```java
+return stream(completableFutureUser,
+	flatMap(getUserDataFromSomewhereAsCompletableFuture),
+	toCompletableFuture());
+```
+
+</script></section><section data-markdown><script type="text/template">
+
+### ExStream
+- Alternative Syntax für einen Teil der Java-API
+- Geringe Einstiegshürde
+
+</script></section><section data-markdown><script type="text/template">
+
+# Zusammenfassung
+
+</script></section><section data-markdown><script type="text/template">
+
+## Zusammenfassung
+
+- Passende Lizenz aussuchen!
+- Github -> TravisCI -> Bintray -> JCenter
+- Durchbeißen! (Oder andere Sprache benutzen)
+- Lieblings-Libraries aus anderen Sprachen portieren
+- Probleme lösen
+- Programmieren angenehmer gestalten
+
 </script></section><section data-markdown><script type="text/template">
 </script></section><section data-markdown><script type="text/template">
 </script></section><section data-markdown><script type="text/template">
