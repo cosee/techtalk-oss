@@ -154,7 +154,7 @@ SOFTWARE.
 
 ### Apache v2
 
-- 
+- Ähnliche Freiheiten wie MIT Lizenz
 - Firmen haben keine Angst davor
 
 </script></section><section data-markdown><script type="text/template">
@@ -169,6 +169,7 @@ SOFTWARE.
 ### GPL
 - Die Library darf nur in Projekten verwendet werden die ebenfalls unter der GPL stehen (viral)
 - Sinn: Das Open Source Ökosystem stärken
+- In Firmen üblicherweise verboten
 
 </script></section><section data-markdown><script type="text/template">
 
@@ -402,6 +403,7 @@ Gradle?
 - Wie Maven
 - Einfacher
 - Langsamer, mehr Bugs
+- Kann relativ einfach Maven POMs generieren
 
 </script></section><section data-markdown><script type="text/template">
 
@@ -846,9 +848,9 @@ return orDefault(let(person,
 
 ```java
 return users.stream()
-	.flatMap(User::getAccount)
+	.flatMap(User::getAccounts)
 	.sortBy(Account::getId);
-
+᠎
 ```
 
 </script></section><section data-markdown><script type="text/template">
@@ -859,7 +861,7 @@ return users.stream()
 return users.stream()
 	.flatMap(User::getAccounts.stream())
 	.sortBy(Account::getId);
-
+᠎
 ```
 
 </script></section><section data-markdown><script type="text/template">
@@ -870,7 +872,7 @@ return users.stream()
 return users.stream()
 	.flatMap(User::getAccounts.andThen(List::stream))
 	.sortBy(Account::getId);
-
+᠎
 ```
 
 </script></section><section data-markdown><script type="text/template">
@@ -879,9 +881,9 @@ return users.stream()
 
 ```java
 return users.stream()
-	.flatMap(user -> user.getAccounts.stream())
+	.flatMap(user -> user.getAccounts().stream())
 	.sortBy(Account::getId);
-
+᠎
 ```
 
 </script></section><section data-markdown><script type="text/template">
@@ -890,8 +892,9 @@ return users.stream()
 
 ```java
 return users.stream()
-	.flatMap(user -> user.getAccounts.stream())
+	.flatMap(user -> user.getAccounts().stream())
 	.sorted(Comparators.comparing(Account::getId));
+᠎
 
 ```
 
@@ -901,7 +904,7 @@ return users.stream()
 
 ```java
 return users.stream()
-	.flatMap(user -> user.getAccounts.stream())
+	.flatMap(user -> user.getAccounts().stream())
 	.sorted(Comparators.comparing(Account::getId))
 	.toList();
 ```
@@ -912,7 +915,7 @@ return users.stream()
 
 ```java
 return users.stream()
-	.flatMap(user -> user.getAccounts.stream())
+	.flatMap(user -> user.getAccounts().stream())
 	.sorted(Comparators.comparing(Account::getId))
 	.collect(Collectors.toList());
 ```
@@ -923,7 +926,7 @@ return users.stream()
 
 ```java
 return users.stream()
-	.flatMap(user -> user.getAccounts.stream())
+	.flatMap(user -> user.getAccounts().stream())
 	.sorted(comparing(Account::getId))
 	.collect(toList());
 ```
@@ -934,7 +937,7 @@ return users.stream()
 
 ```java
 return users.stream()
-	.flatMap(user -> user.getAccounts.stream())
+	.flatMap(user -> user.getAccounts().stream())
 	.sorted(comparing(Account::getId))
 	.collect(toList());
 ```
@@ -945,7 +948,18 @@ return users.stream()
 
 ```java
 return stream(users,
-	flatMap(user -> user.getAccounts.stream()),
+	flatMap(user -> user.getAccounts().stream()),
+	sorted(comparing(Account::getId)),
+	collect(toList()));
+```
+
+</script></section><section data-markdown><script type="text/template">
+
+### Java Stream API -> ExStream
+
+```java
+return stream(users,
+	flatMap(user -> user.getAccounts()),
 	sorted(comparing(Account::getId)),
 	collect(toList()));
 ```
@@ -985,13 +999,24 @@ return stream(users,
 
 </script></section><section data-markdown><script type="text/template">
 
+### Java Stream API -> ExStream
+
+```java
+return stream(users,
+	flatMap(User::getAccounts),
+	sortBy(Account::getId));
+᠎
+```
+
+</script></section><section data-markdown><script type="text/template">
+
 ### ExStream
 
 ```java
 return stream(users,
 	flatMap(User::getAccounts),
 	sortBy(Account::getId));
-
+᠎
 ```
 
 </script></section><section data-markdown><script type="text/template">
@@ -1001,7 +1026,7 @@ return stream(users,
 ```java
 return optionalUser
 	.flatMap(User::getAccounts);
-
+᠎
 ```
 
 </script></section><section data-markdown><script type="text/template">
@@ -1012,7 +1037,6 @@ return optionalUser
 return optionalUser
 	.map(User::getAccounts)
 	.orElse(Collections.emptyList());
-
 ```
 
 </script></section><section data-markdown><script type="text/template">
@@ -1022,7 +1046,7 @@ return optionalUser
 ```java
 return stream(optionalUser,
 	flatMap(User::getAccounts));
-
+᠎
 ```
 
 </script></section><section data-markdown><script type="text/template">
@@ -1038,8 +1062,20 @@ return stream(completableFutureUser,
 </script></section><section data-markdown><script type="text/template">
 
 ### ExStream
-- Alternative Syntax für einen Teil der Java-API
-- Geringe Einstiegshürde
+- Vereinfacht bereits existierende Funktionalität
+
+```java
+// :(
+return users.stream()
+	.flatMap(user -> user.getAccounts().stream())
+	.sorted(Comparators.comparing(Account::getId))
+	.collect(Collectors.toList());
+
+// :)
+return stream(users,
+	flatMap(User::getAccounts),
+	sortBy(Account::getId));
+```
 
 </script></section><section data-markdown><script type="text/template">
 
@@ -1057,10 +1093,15 @@ return stream(completableFutureUser,
 - Programmieren angenehmer gestalten
 
 </script></section><section data-markdown><script type="text/template">
+
+### Nächster TechTalk:
+
+## Gibt's da nicht auch was von AWS?
+#### Andreas Mohrhard
+
 </script></section><section data-markdown><script type="text/template">
-</script></section><section data-markdown><script type="text/template">
-</script></section><section data-markdown><script type="text/template">
-</script></section><section data-markdown><script type="text/template">
+
+# EOF
 
 </script></section>
 
