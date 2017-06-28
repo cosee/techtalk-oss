@@ -52,19 +52,6 @@ von Michael Zinn
 
 </script></section><section data-markdown><script type="text/template">
 
-## Agenda
-
-1. Wer?
-2. Warum?
-3. Wie?
-4. Was?
- 
-</script></section><section data-markdown><script type="text/template">
-
-## Wer?
-
-</script></section><section data-markdown><script type="text/template">
-
 ## Wer?
 - Michael Zinn
 - Java, Kotlin, JavaScript, TypeScript, CoffeeScript, PureScript, Ruby, Clojure, Haskell
@@ -83,30 +70,23 @@ von Michael Zinn
 
 </script></section><section data-markdown><script type="text/template">
 
-# Warum?
+## Agenda
+
+1. Warum Libraries schreiben?
+2. Wie veröffentlichen?
+3. Beispiele
+ 
+</script></section><section data-markdown><script type="text/template">
+
+# Warum Libraries schreiben?
 
 </script></section><section data-markdown><script type="text/template">
 
-Ganzes Projekt kopieren?
-
-</script></section><section data-markdown><script type="text/template">
-
-Code aus anderem Projekt kopieren?
-
-</script></section><section data-markdown><script type="text/template">
-
-- ~~Ganzes Projekt kopieren?~~ → Framework
-- ~~Code aus anderem Projekt kopieren?~~ → Library
-
-</script></section><section data-markdown><script type="text/template">
-
-## Aber warum?
-
-</script></section><section data-markdown><script type="text/template">
+## Vorteile von Code Reuse:
 
 - DRY: Don't Repeat Yourself
+- Weniger Code → Weniger Bugs
 - Bugs müssen nur an einer Stelle gefixt werden
-- TODO LESEN https://solidsourceit.wordpress.com/2012/08/03/does-source-code-duplication-matter/
 
 </script></section><section data-markdown><script type="text/template">
 
@@ -116,9 +96,10 @@ Code aus anderem Projekt kopieren?
 
 ## Wie?
 
-1. Lizenz
-2. Publish
-3. ReadMe
+1. Code schreiben
+2. Lizenz
+3. Publish
+4. ReadMe
 
 </script></section><section data-markdown><script type="text/template">
 
@@ -136,11 +117,22 @@ Code aus anderem Projekt kopieren?
 
 ### MIT License
 
-Copyright (c) -year- -copyright holders-
+* Tu was du willst.
 
-Tu was du willst.
+* Verklag mich nicht.
 
-Verklag mich nicht:
+```none
+Copyright (c) <year> <copyright holders>
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -149,6 +141,7 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+```
 
 </script></section><section data-markdown><script type="text/template">
 
@@ -357,6 +350,11 @@ JFrog:
 > 
 > Regards,
 > JFrog Support
+
+</script></section><section data-markdown><script type="text/template">
+
+JFrog:
+> We are not sure what is meant by a "step-by-step tutorial".
 
 </script></section><section data-markdown><script type="text/template">
 
@@ -775,8 +773,8 @@ class Example {
 ```
 
 1. String hat eine substring Methode
-2. Optional<String> ist KEIN String
-3. Optional<String> hat keine substring Methode
+2. ~~Optional&lt;String> ist ein String~~
+3. Optional&lt;String> hat keine substring Methode
 
 </script></section><section data-markdown><script type="text/template">
 
@@ -828,8 +826,9 @@ class Example {
 
 ### null4j
 
-- Löst das Null-Problem
+- Löst ein konkretes Problem
 - Wenige, einfache, aber mächtige Funktionen (Nur orDefault und let, die aber kombinierbar sind)
+- Ausführliche README, da es auch von anderen genutzt werden soll
 
 ```java
 return orDefault(let(person,
@@ -933,6 +932,21 @@ return users.stream()
 
 </script></section><section data-markdown><script type="text/template">
 
+### Java Stream API
+
+```java
+return users.stream()
+	.flatMap(user -> user.getAccounts().stream())
+	.sorted(comparing(Account::getId))
+	.collect(toList());
+```
+
+```haskell
+sortWith accountId (accounts =<< users)
+```
+
+</script></section><section data-markdown><script type="text/template">
+
 ### Java Stream API -> ExStream
 
 ```java
@@ -1024,6 +1038,17 @@ return stream(users,
 ### ExStream
 
 ```java
+return stream(users,
+	flatMap(User::getAccounts),
+	shuffle());
+᠎
+```
+
+</script></section><section data-markdown><script type="text/template">
+
+### Java
+
+```java
 return optionalUser
 	.flatMap(User::getAccounts);
 ᠎
@@ -1031,7 +1056,7 @@ return optionalUser
 
 </script></section><section data-markdown><script type="text/template">
 
-### ExStream
+### Java
 
 ```java
 return optionalUser
@@ -1062,16 +1087,17 @@ return stream(completableFutureUser,
 </script></section><section data-markdown><script type="text/template">
 
 ### ExStream
+- Bietet nichts fundamental neues
 - Vereinfacht bereits existierende Funktionalität
 
 ```java
-// :(
+// Viel Boilerplate Stuff
 return users.stream()
 	.flatMap(user -> user.getAccounts().stream())
 	.sorted(Comparators.comparing(Account::getId))
 	.collect(Collectors.toList());
 
-// :)
+// Weniger BS
 return stream(users,
 	flatMap(User::getAccounts),
 	sortBy(Account::getId));
@@ -1086,11 +1112,15 @@ return stream(users,
 ## Zusammenfassung
 
 - Passende Lizenz aussuchen!
-- Github -> TravisCI -> Bintray -> JCenter
+- Github → TravisCI → Bintray → JCenter
 - Durchbeißen! (Oder andere Sprache benutzen)
 - Lieblings-Libraries aus anderen Sprachen portieren
 - Probleme lösen
 - Programmieren angenehmer gestalten
+
+</script></section><section data-markdown><script type="text/template">
+
+# EOF
 
 </script></section><section data-markdown><script type="text/template">
 
@@ -1101,7 +1131,11 @@ return stream(users,
 
 </script></section><section data-markdown><script type="text/template">
 
-# EOF
+## P.S.:
+
+facebook.com/coseegmbh
+
+Twitter: @coseeaner, @RedNifre
 
 </script></section>
 
