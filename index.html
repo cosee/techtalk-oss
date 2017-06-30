@@ -43,12 +43,14 @@
 
 
 
-                   <section data-markdown><script type="text/template">
+                   <section data-markdown data-background="coseett2.png"><script type="text/template">
 
 # Code Reuse durch Libraries 
 ### Open Source einfach selbst gemacht
 
 von Michael Zinn
+
+<img src=""/>
 
 </script></section><section data-markdown><script type="text/template">
 
@@ -73,7 +75,7 @@ von Michael Zinn
 ## Agenda
 
 1. Warum Libraries schreiben?
-2. Wie veröffentlichen?
+2. Wie?
 3. Beispiele
  
 </script></section><section data-markdown><script type="text/template">
@@ -241,25 +243,6 @@ o_O
 
 </script></section><section data-markdown><script type="text/template">
 
-### Java
-1. Maven Central Account erstellen
-2. Sonatype Account erstellen
-3. Beide Accounts verknüpfen
-4. Einen PGP-Key erzeugen
-5. Den Key auf einem öffentlichen Server hinterlegen
-6. Javadoc schreiben
-7. Sonatype-Jira Account erstellen
-8. GroupId per Jira-Ticket beantragen
-9. Artefakte signieren
-10. Artefakte bei einem erlaubten Provider hosten
-11. Library einreichen
-12. Ein paar Tage warten
-13. Formfehler beheben
-14. Goto 11
-15. Eine Ziege opfern
-
-</script></section><section data-markdown><script type="text/template">
-
 Was ist unser Ziel?
 
 </script></section><section data-markdown><script type="text/template">
@@ -326,8 +309,6 @@ Was ist unser Ziel?
 
 JFrog:
 
-> Hi,
-> 
 > JCenter hosts open source applications using the Maven naming convention which has 3 components. For example, a valid allocated path might be: org/apache/maven
 > 
 > The path of the file you have requested to include is missing one of the components. 
@@ -360,12 +341,12 @@ JFrog:
 
 JFrog:
 
-> … Maven naming convention which has 3 components…
+> … Maven naming convention … 3 components…
 > Please update your JCenter inclusion path…
 
 Michael:
 
-> … doesn't "biz.cosee.null4j" and biz/cosee/null4j have three parts already? 
+> … doesn't biz/cosee/null4j have three parts already? 
 
 JFrog:
 
@@ -613,18 +594,18 @@ $
 </script></section><section data-markdown><script type="text/template">
 
 ### FP in Javascript
+- Folktale (Datentypen)
 - Ramda (Funktionen)
-- Folktale (Daten)
 
 </script></section><section data-markdown><script type="text/template">
 
 ### FP in Java
-- vavr (Daten + Objekt-funktionale Methoden)
+- vavr (Datentypen + Objekt-funktionale Methoden)
 
 </script></section><section data-markdown><script type="text/template">
 
 ### FP in Java
-- vavr (Daten)
+- vavr (Datentypen)
 - Ravr (Funktionen)
 
 </script></section><section data-markdown><script type="text/template">
@@ -633,6 +614,13 @@ $
 - Portierung einer .js Library
 - Ermöglicht gleichen Code im Frontend und Backend
 - Gutes Einstiegsprojekt
+
+```java
+String names = doWith(stuffList,
+	map(Stuff::getName),
+	reverse(),
+	join(", "));
+```
 
 </script></section><section data-markdown><script type="text/template">
 
@@ -801,7 +789,7 @@ class Example {
 
 </script></section><section data-markdown><script type="text/template">
 
-### Das Null-Problem
+### null4j
 
 ```java
 @NotNullByDefault
@@ -1105,7 +1093,7 @@ return stream(users,
 
 </script></section><section data-markdown><script type="text/template">
 
-# Zusammenfassung
+## Zusammenfassung
 
 </script></section><section data-markdown><script type="text/template">
 
