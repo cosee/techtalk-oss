@@ -1,8 +1,8 @@
-## Funktionale Programmierung mit Javascript
+## Code Reuse durch Libraries: Open Source einfach selbst gemacht
 
-Vortragsfolien des cosee techtalks vom 29.9.2016.
+von Michael Zinn
+
+Vortragsfolien des cosee techtalks vom 29.6.2017.
 
 [Techtalk Website](talks.cosee.biz)
-
-(Video ist demnaechst online)
 
